@@ -1,0 +1,42 @@
+services:
+  server:
+    build: ./server
+    image: server:v1
+    ports:
+      - "8080:8080"
+    depends_on:
+      - apache
+      - db
+    links:
+      - db
+    environment:
+      REST_DB_NAME: ${MYSQL_DATABASE}
+      REST_DB_PORT: ${MYSQL_PORT}
+      REST_DB_HOST: db
+      REST_DB_USER: ${MYSQL_USER}
+      REST_DB_PASSWORD: ${MYSQL_PASSWORD}
+  apache:
+    image: httpd:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./client:/usr/local/apache2/htdocs
+  db:
+    image: mysql:latest
+    ports:
+      - "${MYSQL_PORT}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      # MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_TCP_PORT: ${MYSQL_PORT}
+    volumes:
+      - database:/var/lib/mysql
+
+volumes:
+  database: {}
+  
+
+      
