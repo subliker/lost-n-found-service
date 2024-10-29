@@ -28,6 +28,7 @@ func NewMySQL(cfg config.DBConfig, gcfg *gorm.Config) (*gorm.DB, error) {
 	for i := range 3 {
 		db, err = gorm.Open(mysql.Open(dsn), gcfg)
 		if err == nil {
+			logger.Zap.Info("DB connected")
 			break
 		}
 		logger.Zap.Infof("DB connection retry %d", i+1)
@@ -36,7 +37,6 @@ func NewMySQL(cfg config.DBConfig, gcfg *gorm.Config) (*gorm.DB, error) {
 		}
 	}
 
-	logger.Zap.Info("DB connected")
 	return db, err
 }
 

@@ -21,7 +21,7 @@ var logDirPath = "./logs"
 // newLogger creates new zep sugared logger
 func newLogger() *zap.SugaredLogger {
 	// creating log dir path(if not exist)
-	if err := os.Mkdir("./logs", os.ModePerm); err != nil && !os.IsExist(err) {
+	if err := os.Mkdir(logDirPath, os.ModePerm); err != nil && !os.IsExist(err) {
 		log.Fatalf("cannot create logger path: %s", err)
 	}
 

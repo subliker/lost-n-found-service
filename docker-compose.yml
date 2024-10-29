@@ -7,8 +7,8 @@ services:
     depends_on:
       - apache
       - db
-    links:
-      - db
+    networks:
+      - main
     environment:
       REST_DB_NAME: ${MYSQL_DATABASE}
       REST_DB_PORT: ${MYSQL_PORT}
@@ -16,15 +16,21 @@ services:
       REST_DB_USER: ${MYSQL_USER}
       REST_DB_PASSWORD: ${MYSQL_PASSWORD}
   apache:
-    image: httpd:latest
+    build:
+      context: ./client
     ports:
       - "80:80"
+    networks:
+      - main
     volumes:
-      - ./client:/usr/local/apache2/htdocs
+      - ./client/public:/usr/local/apache2/htdocs
+      - ./client/httpd.conf:/usr/local/apache2/conf/httpd.conf
   db:
     image: mysql:latest
     ports:
       - "${MYSQL_PORT}:3306"
+    networks:
+      - main
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -38,5 +44,6 @@ services:
 volumes:
   database: {}
   
-
+networks:
+  main:
       

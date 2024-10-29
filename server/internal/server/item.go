@@ -35,7 +35,7 @@ func (s *Server) createItem(w http.ResponseWriter, r *http.Request) {
 	logger.Zap.Info(i)
 
 	if err := s.db.Create(&i); err != nil {
-		http.Error(w, "Error creating item ", http.StatusInternalServerError)
+		http.Error(w, "Error creating item: ", http.StatusInternalServerError)
 		return
 	}
 }
