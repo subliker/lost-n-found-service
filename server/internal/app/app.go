@@ -15,7 +15,7 @@ type App struct {
 }
 
 // New creates instance of app with router and bd
-func New(cfg config.AppConfig, db *gorm.DB, storage *storage.Storage) *App {
+func New(cfg config.AppConfig, db *gorm.DB, storage storage.Storage) *App {
 	a := &App{
 		config: cfg,
 		server: server.New(cfg.Server, db, storage),

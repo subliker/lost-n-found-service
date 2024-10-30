@@ -7,7 +7,7 @@ import (
 	"github.com/subliker/server/internal/config"
 	"github.com/subliker/server/internal/db"
 	"github.com/subliker/server/internal/logger"
-	"github.com/subliker/server/internal/storage"
+	"github.com/subliker/server/internal/storage/minio"
 	"gorm.io/gorm"
 )
 
@@ -37,7 +37,7 @@ func main() {
 	}
 
 	// minio init
-	storage := storage.New(cfg.Storage)
+	storage := minio.New(cfg.Storage)
 
 	// running main app
 	app.New(cfg.App, gdb, storage).Run()

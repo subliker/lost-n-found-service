@@ -15,11 +15,11 @@ type Server struct {
 	config  config.ServerConfig
 	router  *mux.Router
 	db      *gorm.DB
-	storage *storage.Storage
+	storage storage.Storage
 }
 
 // New creates new instance of server with params from cfg
-func New(cfg config.ServerConfig, db *gorm.DB, storage *storage.Storage) *Server {
+func New(cfg config.ServerConfig, db *gorm.DB, storage storage.Storage) *Server {
 	s := Server{
 		config:  cfg,
 		router:  mux.NewRouter(),
