@@ -29,3 +29,18 @@ fetch('/api/items') // Измените URL на адрес вашего REST AP
     });
   })
   .catch(error => console.error('Error:', error));
+
+
+document.getElementById("form").addEventListener("submit", function(event) {
+  event.preventDefault();
+  
+  var formData = new FormData(document.getElementById("form"));
+  
+  fetch("/api/item", { 
+    method: "POST", 
+    body: formData
+  })
+  .then(response => response.text())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+});

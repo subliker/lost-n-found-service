@@ -10,8 +10,9 @@ import (
 )
 
 type Config struct {
-	DB  DBConfig  `validate:"required" mapstructure:"db"`
-	App AppConfig `validate:"required" mapstructure:"app"`
+	DB      DBConfig      `validate:"required" mapstructure:"db"`
+	Storage StorageConfig `validate:"required" mapstructure:"storage"`
+	App     AppConfig     `validate:"required" mapstructure:"app"`
 }
 
 type DBConfig struct {
@@ -24,6 +25,11 @@ type DBConfig struct {
 
 type AppConfig struct {
 	Server ServerConfig `validate:"required" mapstructure:"server"`
+}
+
+type StorageConfig struct {
+	Access string `validate:"required" mapstructure:"access"`
+	Secret string `validate:"required" mapstructure:"secret"`
 }
 
 type ServerConfig struct {
@@ -45,6 +51,9 @@ func init() {
 	viper.SetDefault("DB.HOST", "")
 	viper.SetDefault("DB.USER", "")
 	viper.SetDefault("DB.PASSWORD", "")
+
+	viper.SetDefault("STORAGE.ACCESS", "")
+	viper.SetDefault("STORAGE.SECRET", "")
 
 	viper.SetEnvPrefix("rest")
 	replacer := strings.NewReplacer(".", "_")

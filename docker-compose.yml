@@ -15,6 +15,8 @@ services:
       REST_DB_HOST: db
       REST_DB_USER: ${MYSQL_USER}
       REST_DB_PASSWORD: ${MYSQL_PASSWORD}
+      REST_STORAGE_ACCESS: ${MINIO_ROOT_USER}
+      REST_STORAGE_SECRET: ${MINIO_ROOT_PASSWORD}
   apache:
     build:
       context: ./client
@@ -40,6 +42,21 @@ services:
       MYSQL_TCP_PORT: ${MYSQL_PORT}
     volumes:
       - database:/var/lib/mysql
+  minio:
+    
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - main
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - ./minio/data:/export
+      - ./minio/config:/root/.minio
+    command: server /data --console-address ":9001"
 
 volumes:
   database: {}

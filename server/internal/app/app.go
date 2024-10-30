@@ -4,6 +4,7 @@ import (
 	"github.com/subliker/server/internal/config"
 	"github.com/subliker/server/internal/logger"
 	"github.com/subliker/server/internal/server"
+	"github.com/subliker/server/internal/storage"
 	"gorm.io/gorm"
 )
 
@@ -14,10 +15,10 @@ type App struct {
 }
 
 // New creates instance of app with router and bd
-func New(cfg config.AppConfig, db *gorm.DB) *App {
+func New(cfg config.AppConfig, db *gorm.DB, storage *storage.Storage) *App {
 	a := &App{
 		config: cfg,
-		server: server.New(cfg.Server, db),
+		server: server.New(cfg.Server, db, storage),
 		db:     db,
 	}
 	logger.Zap.Info("App instance created")
