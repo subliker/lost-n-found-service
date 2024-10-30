@@ -10,12 +10,12 @@ import (
 )
 
 type Config struct {
-	DB      DBConfig      `validate:"required" mapstructure:"db"`
-	Storage StorageConfig `validate:"required" mapstructure:"storage"`
-	App     AppConfig     `validate:"required" mapstructure:"app"`
+	ItemStore  ItemStore  `validate:"required" mapstructure:"item"`
+	PhotoStore PhotoStore `validate:"required" mapstructure:"photo"`
+	App        App        `validate:"required" mapstructure:"app"`
 }
 
-type DBConfig struct {
+type ItemStore struct {
 	Name     string `validate:"required" mapstructure:"name"`
 	Port     int    `validate:"required" mapstructsure:"port"`
 	Host     string `validate:"required" mapstructure:"host"`
@@ -23,16 +23,16 @@ type DBConfig struct {
 	Password string `validate:"required" mapstructure:"password"`
 }
 
-type AppConfig struct {
-	Server ServerConfig `validate:"required" mapstructure:"server"`
-}
-
-type StorageConfig struct {
+type PhotoStore struct {
 	Access string `validate:"required" mapstructure:"access"`
 	Secret string `validate:"required" mapstructure:"secret"`
 }
 
-type ServerConfig struct {
+type App struct {
+	Server Server `validate:"required" mapstructure:"server"`
+}
+
+type Server struct {
 	Port int `validate:"required" mapstructure:"port"`
 }
 
@@ -46,16 +46,16 @@ func init() {
 	// to env work
 	viper.SetDefault("APP.SERVER.PORT", 8080)
 
-	viper.SetDefault("DB.PORT", "")
-	viper.SetDefault("DB.NAME", 3306)
-	viper.SetDefault("DB.HOST", "")
-	viper.SetDefault("DB.USER", "")
-	viper.SetDefault("DB.PASSWORD", "")
+	viper.SetDefault("ITEM.PORT", "")
+	viper.SetDefault("ITEM.NAME", 3306)
+	viper.SetDefault("ITEM.HOST", "")
+	viper.SetDefault("ITEM.USER", "")
+	viper.SetDefault("ITEM.PASSWORD", "")
 
-	viper.SetDefault("STORAGE.ACCESS", "")
-	viper.SetDefault("STORAGE.SECRET", "")
+	viper.SetDefault("PHOTO.ACCESS", "")
+	viper.SetDefault("PHOTO.SECRET", "")
 
-	viper.SetEnvPrefix("rest")
+	viper.SetEnvPrefix("SERVER")
 	replacer := strings.NewReplacer(".", "_")
 	viper.SetEnvKeyReplacer(replacer)
 	viper.AutomaticEnv()

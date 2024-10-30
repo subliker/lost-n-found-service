@@ -2,17 +2,24 @@ package server
 
 import (
 	"encoding/json"
-	"io"
+	"flag"
 	"net/http"
-	"time"
 
+	"github.com/go-playground/form/v4"
 	"github.com/subliker/server/internal/logger"
 	"github.com/subliker/server/internal/models"
 )
 
+var maxMultipartFormSize int64
+var decoder = form.NewDecoder()
+
+func init() {
+	flag.Int64Var(&maxMultipartFormSize, "mmfs", 32<<20, " setting maximum multipart form size")
+}
+
 func (s *Server) getItems(w http.ResponseWriter, r *http.Request) {
 	items := make([]models.Item, 0)
-	if err := s.db.Find(&items).Error; err != nil {
+	if err := s.itemStore.Find(&items); err != nil {
 		http.Error(w, "Error getting items", http.StatusInternalServerError)
 		return
 	}
@@ -22,58 +29,41 @@ func (s *Server) getItems(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-type CreateItemRequest struct {
-	Name         string    `json:"name"`
-	Location     string    `json:"location"`
-	FoundTime    time.Time `json:"found_time"`
-	PhotoContent string    `json:"photo_content"`
-}
-
 func (s *Server) createItem(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseMultipartForm(10 << 20)
+	// parsing multipart form from request
+	err := r.ParseMultipartForm(maxMultipartFormSize)
 	if err != nil {
-		http.Error(w, "Error parsing form: "+err.Error(), http.StatusBadRequest)
+		http.Error(w, "Error parsing multipart form: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// body, _ := io.ReadAll(r.Body)
-
-	var reqBody CreateItemRequest
-	// if err := json.Unmarshal(body, &reqBody); err != nil {
-	// 	http.Error(w, "Error decoding item data: "+err.Error(), http.StatusBadRequest)
-	// 	return
-	// }
-	ft, _ := time.Parse(time.RFC3339, r.FormValue("found_time"))
-
-	reqBody = CreateItemRequest{
-		Name:      r.FormValue("name"),
-		Location:  r.FormValue("location"),
-		FoundTime: ft,
+	// making item struct
+	var item models.Item
+	if err := decoder.Decode(&item, r.MultipartForm.Value); err != nil {
+		http.Error(w, "Error decoding request body: "+err.Error(), http.StatusBadRequest)
+		return
 	}
+	logger.Zap.Debug(item)
 
-	defer r.Body.Close()
-	logger.Zap.Info(reqBody)
-
-	item := models.Item{
-		Name:      reqBody.Name,
-		Location:  reqBody.Location,
-		FoundTime: reqBody.FoundTime,
-	}
-
-	photo, _, _ := r.FormFile("photo_content")
-
-	if photo != nil {
-		photoContent, _ := io.ReadAll(photo)
-		fName, err := s.storage.PutPublicPhoto(string(photoContent))
+	// getting photo
+	photo, photoHeader, err := r.FormFile("photo_content")
+	// if no getting photo from form errors
+	if err == nil {
+		// getting photo file name in storage
+		photoFileName, err := s.photoStore.Put(photo, photoHeader.Filename, photoHeader.Size)
 		if err != nil {
-			http.Error(w, "Error writing phto: "+err.Error(), http.StatusInternalServerError)
+			http.Error(w, "Error writing photo: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
-		item.PhotoFileName = fName
+		// adding photo file name into item struct
+		item.PhotoFileName = photoFileName
+	} else if err != http.ErrMissingFile {
+		http.Error(w, "Error getting file from form: "+err.Error(), http.StatusBadRequest)
+		return
 	}
 
-	if err := s.db.Create(&item); err.Error != nil {
-		http.Error(w, "Error creating item: "+err.Error.Error(), http.StatusInternalServerError)
+	if err := s.itemStore.Create(&item); err != nil {
+		http.Error(w, "Error creating item: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 }

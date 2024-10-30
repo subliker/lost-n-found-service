@@ -44,6 +44,7 @@ require (
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
+	github.com/go-playground/form/v4 v4.2.1
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/gorilla/mux v1.8.1
 	github.com/jinzhu/inflection v1.0.0 // indirect

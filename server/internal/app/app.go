@@ -4,22 +4,20 @@ import (
 	"github.com/subliker/server/internal/config"
 	"github.com/subliker/server/internal/logger"
 	"github.com/subliker/server/internal/server"
-	"github.com/subliker/server/internal/storage"
-	"gorm.io/gorm"
+	"github.com/subliker/server/internal/store/item"
+	"github.com/subliker/server/internal/store/photo"
 )
 
 type App struct {
-	config config.AppConfig
+	config config.App
 	server *server.Server
-	db     *gorm.DB
 }
 
 // New creates instance of app with router and bd
-func New(cfg config.AppConfig, db *gorm.DB, storage storage.Storage) *App {
+func New(cfg config.App, itemStore item.Store, photoStore photo.Store) *App {
 	a := &App{
 		config: cfg,
-		server: server.New(cfg.Server, db, storage),
-		db:     db,
+		server: server.New(cfg.Server, itemStore, photoStore),
 	}
 	logger.Zap.Info("App instance created")
 	return a
@@ -27,5 +25,6 @@ func New(cfg config.AppConfig, db *gorm.DB, storage storage.Storage) *App {
 
 // Run starts initialized app
 func (a *App) Run() {
+	logger.Zap.Info("App running...")
 	a.server.Run()
 }

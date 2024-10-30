@@ -7,24 +7,24 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/subliker/server/internal/config"
 	"github.com/subliker/server/internal/logger"
-	"github.com/subliker/server/internal/storage"
-	"gorm.io/gorm"
+	"github.com/subliker/server/internal/store/item"
+	"github.com/subliker/server/internal/store/photo"
 )
 
 type Server struct {
-	config  config.ServerConfig
-	router  *mux.Router
-	db      *gorm.DB
-	storage storage.Storage
+	config     config.Server
+	router     *mux.Router
+	itemStore  item.Store
+	photoStore photo.Store
 }
 
 // New creates new instance of server with params from cfg
-func New(cfg config.ServerConfig, db *gorm.DB, storage storage.Storage) *Server {
+func New(cfg config.Server, itemStore item.Store, photoStore photo.Store) *Server {
 	s := Server{
-		config:  cfg,
-		router:  mux.NewRouter(),
-		db:      db,
-		storage: storage,
+		config:     cfg,
+		router:     mux.NewRouter(),
+		itemStore:  itemStore,
+		photoStore: photoStore,
 	}
 	s.initRoutes()
 
