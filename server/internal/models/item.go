@@ -18,5 +18,5 @@ type Item struct {
 	Location      string    `json:"location" form:"location" gorm:"not null"`
 	FoundTime     time.Time `json:"found_time" form:"found_time" gorm:"not null"`
 	IsComplete    bool      `json:"is_complete"`
-	PhotoFileName string    `json:"photo_file_name"`
+	PhotoFileName string    `json:"photo_file_name" form:"photo_file_name"`
 }

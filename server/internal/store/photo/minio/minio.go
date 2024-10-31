@@ -3,6 +3,7 @@ package minio
 import (
 	"bufio"
 	"context"
+	"fmt"
 	"io"
 
 	"github.com/minio/minio-go/v7"
@@ -14,7 +15,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var publicBusketName = "public"
+var publicBucketName = "public"
 
 type minioStore struct {
 	client *minio.Client
@@ -37,16 +38,23 @@ func New(cfg config.PhotoStore) photo.Store {
 }
 
 func (s *minioStore) initBuckets() {
-	exists, err := s.client.BucketExists(context.Background(), publicBusketName)
+	exists, err := s.client.BucketExists(context.Background(), publicBucketName)
 	if err != nil {
 		logger.Zap.Fatal(err)
 	}
 
 	if !exists {
-		err := s.client.MakeBucket(context.Background(), publicBusketName, minio.MakeBucketOptions{})
+		err := s.client.MakeBucket(context.Background(), publicBucketName, minio.MakeBucketOptions{})
 		if err != nil {
 			logger.Zap.Fatal(err)
 		}
+	}
+
+	policy := fmt.Sprintf(`{"Version": "2012-10-17","Statement": [{"Action": ["s3:GetObject"],"Effect": "Allow","Principal": {"AWS": ["*"]},"Resource": ["arn:aws:s3:::%s/*"],"Sid": ""}]}`, publicBucketName)
+
+	err = s.client.SetBucketPolicy(context.Background(), publicBucketName, policy)
+	if err != nil {
+		logger.Zap.Error(err)
 	}
 }
 
@@ -61,7 +69,7 @@ func (s *minioStore) Put(photoReader io.Reader, photoName string, photoSize int6
 	objectName := uuid.New().String() + photoName
 
 	// put object into storage
-	if _, err := s.client.PutObject(context.Background(), publicBusketName, objectName,
+	if _, err := s.client.PutObject(context.Background(), publicBucketName, objectName,
 		photoReader, photoSize, minio.PutObjectOptions{}); err != nil {
 		logger.Zap.Error(err)
 		return "", err
@@ -70,8 +78,8 @@ func (s *minioStore) Put(photoReader io.Reader, photoName string, photoSize int6
 	return objectName, nil
 }
 
-func (s *minioStore) Get(name string) (string, error) {
-	photo, err := s.client.GetObject(context.Background(), publicBusketName, name, minio.GetObjectOptions{})
+func (s *minioStore) Get(photoName string) (string, error) {
+	photo, err := s.client.GetObject(context.Background(), publicBucketName, photoName, minio.GetObjectOptions{})
 	if err != nil {
 		return "", err
 	}

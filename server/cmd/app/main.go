@@ -17,14 +17,14 @@ func main() {
 	cfg := config.Get()
 	logger.Zap.Debugf("Config: %v", cfg)
 
-	// getting gorm
+	// gorm item store init
 	itemStore, err := gorm.NewMySQL(cfg.ItemStore)
 	if err != nil {
 		logger.Zap.Fatalf("creating gorm db error: %s", err)
 	}
 	defer itemStore.Close()
 
-	// minio init
+	// minio photo store init
 	photoStore := minio.New(cfg.PhotoStore)
 
 	// running main app

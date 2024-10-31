@@ -10,14 +10,16 @@ import (
 	"github.com/subliker/server/internal/models"
 )
 
-var maxMultipartFormSize int64
 var decoder = form.NewDecoder()
+
+var maxMultipartFormSize int64
 
 func init() {
 	flag.Int64Var(&maxMultipartFormSize, "mmfs", 32<<20, " setting maximum multipart form size")
 }
 
 func (s *Server) getItems(w http.ResponseWriter, r *http.Request) {
+	// making and getting items array
 	items := make([]models.Item, 0)
 	if err := s.itemStore.Find(&items); err != nil {
 		http.Error(w, "Error getting items", http.StatusInternalServerError)
