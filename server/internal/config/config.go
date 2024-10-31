@@ -15,11 +15,12 @@ type Config struct {
 }
 
 type ItemStore struct {
-	Name     string `validate:"required" mapstructure:"name"`
-	Port     int    `validate:"required" mapstructure:"port"`
-	Host     string `validate:"required" mapstructure:"host"`
-	User     string `validate:"required" mapstructure:"user"`
-	Password string `validate:"required" mapstructure:"password"`
+	Name      string `validate:"required" mapstructure:"name"`
+	Port      int    `validate:"required" mapstructure:"port"`
+	Host      string `validate:"required" mapstructure:"host"`
+	User      string `validate:"required" mapstructure:"user"`
+	Password  string `validate:"required" mapstructure:"password"`
+	Migration bool   `validate:"required" mapstructure:"migration"`
 }
 
 type PhotoStore struct {
@@ -58,6 +59,7 @@ func init() {
 	viper.SetDefault("item.host", "localhost")
 	viper.BindEnv("item.user")
 	viper.BindEnv("item.password")
+	viper.SetDefault("item.migration", false)
 
 	viper.BindEnv("photo.access")
 	viper.BindEnv("photo.secret")

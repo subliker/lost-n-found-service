@@ -17,7 +17,6 @@ services:
       SERVER_ITEM_PASSWORD: ${MYSQL_PASSWORD}
       SERVER_PHOTO_ACCESS: ${MINIO_ROOT_USER}
       SERVER_PHOTO_SECRET: ${MINIO_ROOT_PASSWORD}
-      PHOTO_SECRET: ${MINIO_ROOT_PASSWORD}
     volumes:
       - ./server/logs:/app/logs
   apache:
