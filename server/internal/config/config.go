@@ -3,7 +3,6 @@ package config
 import (
 	"strings"
 
-	_ "github.com/go-playground/validator"
 	"github.com/spf13/viper"
 	"github.com/subliker/server/internal/logger"
 	"github.com/subliker/server/internal/validation"

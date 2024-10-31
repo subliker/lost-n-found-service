@@ -1,0 +1,12 @@
+[item]
+name = "example_item"
+user = "admin"
+password = "secret"
+
+[photo]
+access = "public"
+secret = "photo_secret"
+
+[app]
+[app.server]
+port = 8080
