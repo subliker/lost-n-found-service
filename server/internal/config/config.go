@@ -17,7 +17,7 @@ type Config struct {
 
 type ItemStore struct {
 	Name     string `validate:"required" mapstructure:"name"`
-	Port     int    `validate:"required" mapstructsure:"port"`
+	Port     int    `validate:"required" mapstructure:"port"`
 	Host     string `validate:"required" mapstructure:"host"`
 	User     string `validate:"required" mapstructure:"user"`
 	Password string `validate:"required" mapstructure:"password"`
@@ -37,33 +37,37 @@ type Server struct {
 }
 
 func init() {
-	// viper setup
+	// config file setup
 	viper.SetConfigFile("config.toml")
 	viper.SetConfigType("toml")
 	viper.AddConfigPath(".")
 	viper.SafeWriteConfig()
 
-	// to env work
-	viper.SetDefault("APP.SERVER.PORT", 8080)
-
-	viper.SetDefault("ITEM.PORT", "")
-	viper.SetDefault("ITEM.NAME", 3306)
-	viper.SetDefault("ITEM.HOST", "")
-	viper.SetDefault("ITEM.USER", "")
-	viper.SetDefault("ITEM.PASSWORD", "")
-
-	viper.SetDefault("PHOTO.ACCESS", "")
-	viper.SetDefault("PHOTO.SECRET", "")
-
-	viper.SetEnvPrefix("SERVER")
-	replacer := strings.NewReplacer(".", "_")
-	viper.SetEnvKeyReplacer(replacer)
-	viper.AutomaticEnv()
-
 	// reading config
 	if err := viper.ReadInConfig(); err != nil {
 		logger.Zap.Fatalf("error reading config: %s", err)
 	}
+
+	// reading environments
+	viper.AutomaticEnv()
+
+	// env and default binding
+	viper.SetDefault("app.server.port", 8080)
+
+	viper.SetDefault("item.port", 3306)
+	viper.BindEnv("item.name")
+	viper.SetDefault("item.host", "localhost")
+	viper.BindEnv("item.user")
+	viper.BindEnv("item.password")
+
+	viper.BindEnv("photo.access")
+	viper.BindEnv("photo.secret")
+
+	// env setup
+	viper.SetEnvPrefix("SERVER")
+	replacer := strings.NewReplacer(".", "_")
+	viper.SetEnvKeyReplacer(replacer)
+
 }
 
 func Get() Config {

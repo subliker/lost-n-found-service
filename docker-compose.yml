@@ -17,6 +17,9 @@ services:
       SERVER_ITEM_PASSWORD: ${MYSQL_PASSWORD}
       SERVER_PHOTO_ACCESS: ${MINIO_ROOT_USER}
       SERVER_PHOTO_SECRET: ${MINIO_ROOT_PASSWORD}
+      PHOTO_SECRET: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - ./server/logs:/app/logs
   apache:
     build:
       context: ./client
@@ -37,7 +40,6 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      # MYSQL_ALLOW_EMPTY_PASSWORD: yes
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_TCP_PORT: ${MYSQL_PORT}
     volumes:

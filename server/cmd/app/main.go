@@ -15,7 +15,6 @@ func main() {
 
 	// getting config
 	cfg := config.Get()
-	logger.Zap.Debugf("Config: %v", cfg)
 
 	// gorm item store init
 	itemStore, err := gorm.NewMySQL(cfg.ItemStore)
