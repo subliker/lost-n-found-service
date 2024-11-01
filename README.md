@@ -26,7 +26,7 @@ This project is built using the following technologies:
 - **Database**: MySQL
 - **Object Storage**: MinIO
 - **Containerization**: Docker Compose
-<!-- - **Build Tool**: Makefile -->
+- **Build Tool**: Makefile
 
 ## Getting Started
 
@@ -51,15 +51,22 @@ To get a local copy up and running, follow these steps:
     docker-compose up --build 
     ```
 
-<!-- 4. **Alternatively, use the Makefile**:
+4. **Alternatively, use the Makefile**:
 
    The Makefile provides convenient commands for managing the project. You can run:
 
     ```bash
-    make up      # to build and start the application 
-    make down    # to stop and remove the containers  
-    make logs    # to view logs  
-    ``` -->
+    make build                    # to build the application 
+    make up                       # to build and start the application 
+    make restart                  # restart the application 
+    make down                     # to stop and remove the containers 
+    make rebuild c=CONTAINER_NAME # to rebuild and restart container with CONTAINER_NAME
+    make clean-logs               # to clean all logs
+    make clean-all                # to clean all application data
+    make set-example              # set example env
+    make start-example            # to run the application with example envs
+
+    ```
 
 ## Usage
 
@@ -84,13 +91,8 @@ Here are some examples of log entries you might see:
 {"level":"info","ts":"2024-11-01T06:38:55.159+0800","msg":"App running..."}
 ```
 
-<!-- ## Screenshots
+## Screenshots
 
-![Screenshot 1: Home Page](link-to-screenshot-1)  
-*Description: Show the main interface where users can navigate the service.*
+![Screenshot 1: Home Page](https://github.com/user-attachments/assets/7569f5e4-9f5b-4444-b121-6a68763bf0d3)
 
-![Screenshot 2: Report Found Item](link-to-screenshot-2)  
-*Description: Display the form for reporting a found item.*
-
-![Screenshot 3: Search Results](link-to-screenshot-3)  
-*Description: Illustrate the search results for lost items.* -->
+![Screenshot 2: Report Found Item](https://github.com/user-attachments/assets/8f93fd88-17c6-4f4d-8ec4-070d3340cbed)
