@@ -21,7 +21,6 @@ COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/S
 ENV TZ=Asia/Shanghai
 
 WORKDIR /app
-COPY ./config.toml? .
 COPY --from=builder build/app app
 
 CMD ["./app"]

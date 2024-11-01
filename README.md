@@ -76,7 +76,12 @@ Server logs are stored in the `server/logs` directory. You can monitor this dire
 
 Here are some examples of log entries you might see:
 ```log
-{"level":"info","ts":"2024-11-01T06:38:55.107+0800","msg":"Item store connected"} {"level":"info","ts":"2024-11-01T06:38:55.149+0800","msg":"Item store migrated"} {"level":"info","ts":"2024-11-01T06:38:55.159+0800","msg":"Server routes was initialized"} {"level":"info","ts":"2024-11-01T06:38:55.159+0800","msg":"Server instance created"} {"level":"info","ts":"2024-11-01T06:38:55.159+0800","msg":"App instance created"} {"level":"info","ts":"2024-11-01T06:38:55.159+0800","msg":"App running..."}
+{"level":"info","ts":"2024-11-01T06:38:55.107+0800","msg":"Item store connected"}
+{"level":"info","ts":"2024-11-01T06:38:55.149+0800","msg":"Item store migrated"} 
+{"level":"info","ts":"2024-11-01T06:38:55.159+0800","msg":"Server routes was initialized"} 
+{"level":"info","ts":"2024-11-01T06:38:55.159+0800","msg":"Server instance created"} 
+{"level":"info","ts":"2024-11-01T06:38:55.159+0800","msg":"App instance created"} 
+{"level":"info","ts":"2024-11-01T06:38:55.159+0800","msg":"App running..."}
 ```
 
 <!-- ## Screenshots

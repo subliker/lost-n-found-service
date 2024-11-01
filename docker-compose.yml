@@ -17,18 +17,19 @@ services:
       SERVER_ITEM_PASSWORD: ${MYSQL_PASSWORD}
       SERVER_PHOTO_ACCESS: ${MINIO_ROOT_USER}
       SERVER_PHOTO_SECRET: ${MINIO_ROOT_PASSWORD}
+      SERVER_ITEM_MIGRATION: ${DB_MIGRATION}
     volumes:
-      - ./server/logs:/app/logs
+      - ./logs/server:/app/logs
+      - ./config/server:/app/config
   apache:
-    build:
-      context: ./client
+    image: httpd:2.4
     ports:
       - "80:80"
     networks:
       - main
     volumes:
-      - ./client/public:/usr/local/apache2/htdocs
-      - ./client/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./client:/usr/local/apache2/htdocs
+      - ./config/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
   db:
     image: mysql:latest
     ports:
@@ -44,7 +45,6 @@ services:
     volumes:
       - database:/var/lib/mysql
   minio:
-    
     image: minio/minio:latest
     ports:
       - "9000:9000"
@@ -55,8 +55,8 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     volumes:
-      - ./minio/data:/export
-      - ./minio/config:/root/.minio
+      - ./export:/export
+      - ./config/minio:/root/.minio
     command: server /data --console-address ":9001"
 
 volumes:

@@ -38,9 +38,9 @@ type Server struct {
 
 func init() {
 	// config file setup
-	viper.SetConfigFile("config.toml")
+	viper.SetConfigFile("./config/config.toml")
 	viper.SetConfigType("toml")
-	viper.AddConfigPath(".")
+	viper.AddConfigPath("./config")
 	viper.SafeWriteConfig()
 
 	// reading config

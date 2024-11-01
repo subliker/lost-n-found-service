@@ -26,7 +26,7 @@ func newLogger() *zap.SugaredLogger {
 	}
 
 	// creating log file(if not exist)
-	logFile, err := os.OpenFile(filepath.Join(logDirPath, "main.log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
+	logFile, err := os.OpenFile(filepath.Join(logDirPath, "server.log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
 		log.Fatalf("cannot open logger file: %s", err)
 	}
