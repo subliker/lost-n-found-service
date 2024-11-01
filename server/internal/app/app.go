@@ -9,14 +9,12 @@ import (
 )
 
 type App struct {
-	config config.App
 	server *server.Server
 }
 
 // New creates instance of app with router and bd
-func New(cfg config.App, itemStore item.Store, photoStore photo.Store) *App {
+func New(cfg config.Config, itemStore item.Store, photoStore photo.Store) *App {
 	a := &App{
-		config: cfg,
 		server: server.New(cfg.Server, itemStore, photoStore),
 	}
 	logger.Zap.Info("App instance created")

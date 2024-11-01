@@ -11,7 +11,7 @@ import (
 type Config struct {
 	ItemStore  ItemStore  `validate:"required" mapstructure:"item"`
 	PhotoStore PhotoStore `validate:"required" mapstructure:"photo"`
-	App        App        `validate:"required" mapstructure:"app"`
+	Server     Server     `validate:"required" mapstructure:"server"`
 }
 
 type ItemStore struct {
@@ -26,10 +26,6 @@ type ItemStore struct {
 type PhotoStore struct {
 	Access string `validate:"required" mapstructure:"access"`
 	Secret string `validate:"required" mapstructure:"secret"`
-}
-
-type App struct {
-	Server Server `validate:"required" mapstructure:"server"`
 }
 
 type Server struct {
@@ -52,7 +48,7 @@ func init() {
 	viper.AutomaticEnv()
 
 	// env and default binding
-	viper.SetDefault("app.server.port", 8080)
+	viper.SetDefault("server.port", 8080)
 
 	viper.SetDefault("item.port", 3306)
 	viper.BindEnv("item.name")

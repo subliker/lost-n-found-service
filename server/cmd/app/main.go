@@ -27,5 +27,5 @@ func main() {
 	photoStore := minio.New(cfg.PhotoStore)
 
 	// running main app
-	app.New(cfg.App, itemStore, photoStore).Run()
+	app.New(cfg, itemStore, photoStore).Run()
 }

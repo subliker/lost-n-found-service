@@ -16,7 +16,10 @@ rebuild:
 	docker compose up -d --build $(c)
 
 clean-logs:
-	rm -f ./logs/*.log
+	find logs -type f -name "*.log" -delete
+
+clean-all: clean-logs
+	docker compose down -v
 
 set-example:
 	cat .env.example > .env

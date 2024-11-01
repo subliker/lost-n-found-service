@@ -1,12 +1,14 @@
 [item]
 name = "example_item"
+port = 3306
 user = "admin"
 password = "secret"
+host = "localhost"
+migration = true
 
 [photo]
 access = "public"
 secret = "photo_secret"
 
-[app]
-[app.server]
+[server]
 port = 8080
