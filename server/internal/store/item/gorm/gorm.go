@@ -68,6 +68,11 @@ func (s *gormStore) Find(items *[]models.Item) error {
 	return s.db.Find(items).Error
 }
 
+// Find fills items array by items from database with pagination
+func (s *gormStore) FindWithPagination(items *[]models.Item, page int, pageSize int) error {
+	return s.db.Offset((page - 1) * pageSize).Limit(pageSize).Find(items).Error
+}
+
 // Create creates new item row in database
 func (s *gormStore) Create(item *models.Item) error {
 	return s.db.Create(item).Error

@@ -7,8 +7,8 @@ func (s *Server) initRoutes() {
 		logger.Zap.Fatalf("routes init error: router wasn't initialized")
 	}
 
-	s.router.HandleFunc("/items", s.getItems).Methods("GET")
-	s.router.HandleFunc("/item", s.createItem).Methods("POST")
+	s.router.HandleFunc("/items", s.handleGetItems()).Methods("GET")
+	s.router.HandleFunc("/item", s.handleCreateItem()).Methods("POST")
 
 	logger.Zap.Info("Server routes was initialized")
 }
