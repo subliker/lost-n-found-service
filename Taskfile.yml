@@ -8,7 +8,7 @@ tasks:
       - docker compose build
   up:
     cmds:
-      - docker compose up --build -d
+      - docker compose up --build -d {{.CLI_ARGS}}
   restart:
     cmds:
       - docker compose restart
@@ -17,7 +17,7 @@ tasks:
       - docker compose down
   rebuild:
     cmds:
-      - docker compose up -d --build {{.CONTAINER}}
+      - docker compose up -d --build {{.CLI_ARGS}}
   clean-logs:
     cmds:
       - find logs -type f -name "*.log" -delete

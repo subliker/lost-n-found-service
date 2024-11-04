@@ -65,7 +65,22 @@ To get a local copy up and running, follow these steps:
     make clean-all                # to clean all application data
     make set-example              # set example env
     make start-example            # to run the application with example envs
+    ```
 
+5. **Alternatively, use the Taskfile**:
+   The Taskfile provides convenient commands for managing the project. You can run:
+   
+    ```bash
+    task build                    # to build the application
+    task up                       # to build and start the application
+    task up -- CONTAINER_NAME     # to build and start container with CONTAINER_NAME
+    task restart                  # restart the application
+    task down                     # to stop and remove the containers
+    task rebuild -- CONTAINER_NAME # to rebuild and restart container with CONTAINER_NAME
+    task clean-logs               # to clean all logs
+    task clean-all                # to clean all application data
+    task set-example              # set example env
+    task start-example            # to run the application with example envs
     ```
 
 ## Usage
