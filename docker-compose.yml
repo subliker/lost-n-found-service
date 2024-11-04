@@ -20,7 +20,7 @@ services:
       SERVER_ITEM_MIGRATION: ${DB_MIGRATION}
     volumes:
       - ./logs/server:/app/logs
-      - ./config/server:/app/config
+      - ./configs/server:/app/config
   apache:
     image: httpd:2.4
     ports:
@@ -29,7 +29,7 @@ services:
       - main
     volumes:
       - ./client:/usr/local/apache2/htdocs
-      - ./config/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./configs/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
   db:
     image: mysql:latest
     ports:
@@ -56,7 +56,7 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     volumes:
       - ./export:/export
-      - ./config/minio:/root/.minio
+      - ./configs/minio:/root/.minio
     command: server /data --console-address ":9001"
 
 volumes:
