@@ -24,4 +24,4 @@ clean-all: clean-logs
 set-example:
 	cat .env.example > .env
 
-start-example: set-example up
+start-example: clean-all set-example up

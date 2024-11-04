@@ -1,0 +1,36 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - docker compose build
+  up:
+    cmds:
+      - docker compose up --build -d
+  restart:
+    cmds:
+      - docker compose restart
+  down:
+    cmds:
+      - docker compose down
+  rebuild:
+    cmds:
+      - docker compose up -d --build {{.CONTAINER}}
+  clean-logs:
+    cmds:
+      - find logs -type f -name "*.log" -delete
+  clean-all:
+    cmds:
+      - task: clean-logs
+      - docker compose down -v
+  set-example:
+    cmds:
+      - cat .env.example > .env
+  start-example:
+    cmds:
+      - task: clean-all
+      - task: set-example
+      - task: up
+  

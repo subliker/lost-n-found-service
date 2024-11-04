@@ -26,7 +26,7 @@ func NewMySQL(cfg config.ItemStore) (item.Store, error) {
 	var db *gorm.DB
 	var err error
 
-	maxRetries := 5
+	maxRetries := 10
 	delay := 3 * time.Second
 
 	for i := range maxRetries {
