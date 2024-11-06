@@ -33,7 +33,7 @@ services:
   db:
     image: mysql:latest
     ports:
-      - "${MYSQL_PORT}:3306"
+      - "3306:${MYSQL_PORT}"
     networks:
       - main
     environment:
@@ -44,6 +44,17 @@ services:
       MYSQL_TCP_PORT: ${MYSQL_PORT}
     volumes:
       - database:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: ${MYSQL_PORT}
+    ports:
+      - "8081:80"
+    networks:
+      - main
+    depends_on:
+      - db
   minio:
     image: minio/minio:latest
     ports:
